@@ -32,17 +32,10 @@ namespace ImplicitEither.Tests
 
         // ReSharper disable InconsistentNaming
         // ReSharper disable UnusedParameter.Local
-        private static Either<L, R> CreateLeft<L, R>(Either<L, R> _)
-            => Either<L, R>.Create(default(L));
-
-        private static Either<Either<L, R>, R2> CreateLeft<L, R, R2>(Either<Either<L, R>, R2> _)
-            => Either<Either<L, R>, R2>.Create(Either<L, R>.Create(default(L)));
-
-        private static Either<L, R> CreateRight<L, R>(Either<L, R> _)
-            => Either<L, R>.Create(default(R));
-
-        private static Either<L2, Either<L, R>> CreateRight<L, R, L2>(Either<L2, Either<L, R>> _)
-            => Either<L2, Either<L, R>>.Create(Either<L, R>.Create(default(R)));
+        private static Either<L, R> CreateLeft<L, R>(Either<L, R> _) => Either<L, R>.Create(default(L));
+        private static Either<Either<L, R>, R2> CreateLeft<L, R, R2>(Either<Either<L, R>, R2> _) => Either<Either<L, R>, R2>.Create(default(Either<L, R>));
+        private static Either<L, R> CreateRight<L, R>(Either<L, R> _) => Either<L, R>.Create(default(R));
+        private static Either<L2, Either<L, R>> CreateRight<L, R, L2>(Either<L2, Either<L, R>> _) => Either<L2, Either<L, R>>.Create(default(Either<L, R>));
 
         // ReSharper restore UnusedParameter.Local
         // ReSharper restore InconsistentNaming

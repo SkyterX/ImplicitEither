@@ -30,7 +30,7 @@ namespace ImplicitEither.Tests
         private Either<int, string> ReturnEither(int? intValue = null, string stringValue = null)
         {
             if (intValue.HasValue)
-                return intValue;
+                return intValue.Value;
             return stringValue;
         }
 
