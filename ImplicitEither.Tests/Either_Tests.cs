@@ -3,15 +3,8 @@
 namespace ImplicitEither.Tests
 {
     [TestFixture]
-    public class Either_Tests
+    public class Either_Tests : TestBase
     {
-        private const string stringValue = "0";
-        private const int intValue = 0;
-
-        private Either<int, string> EitherInt { get; } = Either<int, string>.Create(intValue);
-        private Either<int, string> EitherString { get; } = Either<int, string>.Create(stringValue);
-
-
         [Test]
         public void TestGetLeft()
         {
@@ -41,8 +34,5 @@ namespace ImplicitEither.Tests
             EitherInt.Do(left: AssertInt, right: r => Assert.Fail());
             EitherString.Do(left: l => Assert.Fail(), right: AssertString);
         }
-
-        private void AssertInt(int x) => Assert.That(x, Is.EqualTo(intValue));
-        private void AssertString(string x) => Assert.That(x, Is.EqualTo(stringValue));
     }
 }

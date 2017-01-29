@@ -32,6 +32,9 @@ namespace ImplicitEither
         {
             return new Either<L, R>(default(L), right, isLeft: false);
         }
+
+        public static implicit operator Either<L, R>(L left) => Create(left);
+        public static implicit operator Either<L, R>(R right) => Create(right);
     }
 
     public static class EitherExtensions
