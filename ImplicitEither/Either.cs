@@ -74,7 +74,15 @@ namespace ImplicitEither
             return either.Right;
         }
 
+        #region Mapping left either
+
         public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, NL> left, Action<R> right = null)
+            => either.MapLeft(l => (Either<NL, R>) left(l), right);
+
+        public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, Either<R, NL>> left, Action<R> right = null)
+            => either.MapLeft(l => (Either<NL, R>) left(l), right);
+
+        public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, Either<NL, R>> left, Action<R> right = null)
         {
             if (either.IsLeft)
                 return left(either.Left);
@@ -82,13 +90,25 @@ namespace ImplicitEither
             return either.Right;
         }
 
+        #endregion
+
+        #region Mapping right either
+
         public static Either<L, NR> MapRight<L, R, NR>(this Either<L, R> either, Func<R, NR> right, Action<L> left = null)
+            => either.MapRight(r => (Either<L, NR>) right(r), left);
+
+        public static Either<L, NR> MapRight<L, R, NR>(this Either<L, R> either, Func<R, Either<NR, L>> right, Action<L> left = null)
+            => either.MapRight(r => (Either<L, NR>) right(r), left);
+
+        public static Either<L, NR> MapRight<L, R, NR>(this Either<L, R> either, Func<R, Either<L, NR>> right, Action<L> left = null)
         {
             if (either.IsRight)
                 return right(either.Right);
             left?.Invoke(either.Left);
             return either.Left;
         }
+
+        #endregion
 
         public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, NL> left, Func<R, NR> right)
         {
