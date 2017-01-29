@@ -32,7 +32,9 @@ namespace ImplicitEither.Tests
         public void TestDo()
         {
             EitherInt.Do(left: AssertInt, right: r => Assert.Fail());
+            EitherInt.IfLeft(AssertInt);
             EitherString.Do(left: l => Assert.Fail(), right: AssertString);
+            EitherString.IfRight(AssertString);
         }
     }
 }

@@ -63,6 +63,9 @@ namespace ImplicitEither
                 right?.Invoke(either.Right);
         }
 
+        public static void IfLeft<L, R>(this Either<L, R> either, Action<L> left) => either.Do(left: left);
+        public static void IfRight<L, R>(this Either<L, R> either, Action<R> right) => either.Do(right: right);
+
         public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, NL> left, Action<R> right = null)
         {
             if (either.IsLeft)
