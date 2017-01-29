@@ -96,5 +96,14 @@ namespace ImplicitEither
                 return left(either.Left);
             return right(either.Right);
         }
+
+        #region Unwrapping nested either
+
+        public static Either<L, R> Unwrap<L, R>(this Either<L, Either<L, R>> either) => either.IsLeft ? either.Left : either.Right;
+        public static Either<L, R> Unwrap<L, R>(this Either<L, Either<R, L>> either) => either.IsLeft ? either.Left : either.Right;
+        public static Either<L, R> Unwrap<L, R>(this Either<Either<L, R>, R> either) => either.IsLeft ? either.Left : either.Right;
+        public static Either<L, R> Unwrap<L, R>(this Either<Either<R, L>, R> either) => either.IsLeft ? either.Left : either.Right;
+
+        #endregion
     }
 }

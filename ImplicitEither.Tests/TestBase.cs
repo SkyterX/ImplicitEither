@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace ImplicitEither.Tests
 {
@@ -14,5 +15,15 @@ namespace ImplicitEither.Tests
         protected void AssertInt(Either<int, string> either) => either.Do(AssertInt, r => Assert.Fail());
         protected void AssertString(Either<int, string> either) => either.Do(l => Assert.Fail(), AssertString);
         protected void AssertEitherIntOrString(Either<int, string> either) => either.Do(AssertInt, AssertString);
+
+        protected static void AssertType<L, R>(Func<object> getEither)
+        {
+            object either = null;
+            Assert.DoesNotThrow(() => either = getEither());
+            Assert.That(either, Is.TypeOf<Either<L, R>>());
+        }
+
+        protected Either<int, string> Return_Either(Either<int, string> either) => either;
+        protected Either<string, int> ReverseEither(Either<int, string> either) => either;
     }
 }

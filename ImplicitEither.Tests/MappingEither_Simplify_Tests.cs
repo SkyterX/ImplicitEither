@@ -11,9 +11,9 @@ namespace ImplicitEither.Tests
         {
             Assert.Multiple(() =>
             {
-                AssertSimplified(() => EitherInt.MapLeft(l => l));
-                AssertSimplified(() => EitherInt.MapLeft(l => Return_Either(l))); // Either<Either<L, R>, R> -> Either<L, R>
-                AssertSimplified(() => EitherInt.MapLeft(l => ReverseEither(l))); // Either<Either<R, L>, R> -> Either<L, R>
+                AssertSimplified(EitherInt, e => e.MapLeft(l => l));
+                AssertSimplified(EitherInt, e => e.MapLeft(l => Return_Either(l))); // Either<Either<L, R>, R> -> Either<L, R>
+                AssertSimplified(EitherInt, e => e.MapLeft(l => ReverseEither(l))); // Either<Either<R, L>, R> -> Either<L, R>
             });
         }
 
@@ -22,9 +22,9 @@ namespace ImplicitEither.Tests
         {
             Assert.Multiple(() =>
             {
-                AssertSimplified(() => EitherString.MapRight(r => r));
-                AssertSimplified(() => EitherString.MapRight(r => Return_Either(r))); // Either<L, Either<L, R>> -> Either<L, R>
-                AssertSimplified(() => EitherString.MapRight(r => ReverseEither(r))); // Either<L, Either<R, L>> -> Either<L, R>
+                AssertSimplified(EitherString, e => e.MapRight(r => r));
+                AssertSimplified(EitherString, e => e.MapRight(r => Return_Either(r))); // Either<L, Either<L, R>> -> Either<L, R>
+                AssertSimplified(EitherString, e => e.MapRight(r => ReverseEither(r))); // Either<L, Either<R, L>> -> Either<L, R>
             });
         }
 
@@ -35,34 +35,22 @@ namespace ImplicitEither.Tests
             {
                 foreach (var either in new[] {EitherInt, EitherString})
                 {
-                    AssertSimplified(() => either.Map(l => l, r => r));
-                    AssertSimplified(() => either.Map(l => Return_Either(l), r => r)); // Either<Either<L, R>, R> -> Either<L, R>
-                    AssertSimplified(() => either.Map(l => l, r => Return_Either(r))); // Either<L, Either<L, R>> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => l, r => r));
+                    AssertSimplified(either, e => e.Map(l => Return_Either(l), r => r)); // Either<Either<L, R>, R> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => l, r => Return_Either(r))); // Either<L, Either<L, R>> -> Either<L, R>
 
-                    AssertSimplified(() => either.Map(l => ReverseEither(l), r => r)); // Either<Either<R, L>, R> -> Either<L, R>
-                    AssertSimplified(() => either.Map(l => l, r => ReverseEither(r))); // Either<L, Either<R, L>> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => ReverseEither(l), r => r)); // Either<Either<R, L>, R> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => l, r => ReverseEither(r))); // Either<L, Either<R, L>> -> Either<L, R>
 
-                    AssertSimplified(() => either.Map(l => Return_Either(l), r => Return_Either(r))); // Either<Either<L, R>, Either<L, R>> -> Either<L, R>
-                    AssertSimplified(() => either.Map(l => Return_Either(l), r => ReverseEither(r))); // Either<Either<L, R>, Either<R, L>> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => Return_Either(l), r => Return_Either(r))); // Either<Either<L, R>, Either<L, R>> -> Either<L, R>
+                    AssertSimplified(either, e => e.Map(l => Return_Either(l), r => ReverseEither(r))); // Either<Either<L, R>, Either<R, L>> -> Either<L, R>
                 }
             });
         }
 
-        private Either<int, string> Return_Either(Either<int, string> either)
+        private void AssertSimplified<L, R>(Either<L, R> either, Func<Either<L, R>, object> getEither)
         {
-            return either;
-        }
-
-        private Either<string, int> ReverseEither(Either<int, string> either)
-        {
-            return either;
-        }
-
-        private static void AssertSimplified<X, Y>(Func<Either<X, Y>> getEither)
-        {
-            Either<X, Y> either = null;
-            Assert.DoesNotThrow(() => either = getEither());
-            Assert.That(either, Is.TypeOf<Either<int, string>>());
+            AssertType<L, R>(() => getEither(either));
         }
     }
 }
