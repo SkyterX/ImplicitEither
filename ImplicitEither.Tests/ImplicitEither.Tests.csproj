@@ -50,7 +50,6 @@
     <Compile Include="MappingEither_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
-    <Compile Include="TypeConstraints_Tests.cs" />
     <Compile Include="UnwrappingNested_Tests.cs" />
   </ItemGroup>
   <ItemGroup>

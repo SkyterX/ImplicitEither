@@ -16,11 +16,17 @@ namespace ImplicitEither.Tests
                 AssertType<int, string>(() => CreateLeft(default(Either<int, Either<string, int>>)).Unwrap());
                 AssertType<int, string>(() => CreateLeft(default(Either<Either<string, int>, string>)).Unwrap());
 
+                AssertType<int, string>(() => CreateLeft(default(Either<Either<int, string>, Either<int, string>>)).Unwrap());
+                AssertType<int, string>(() => CreateLeft(default(Either<Either<int, string>, Either<string, int>>)).Unwrap());
+
                 AssertType<int, string>(() => CreateRight(default(Either<int, Either<int, string>>)).Unwrap());
                 AssertType<int, string>(() => CreateRight(default(Either<Either<int, string>, string>)).Unwrap());
 
                 AssertType<int, string>(() => CreateRight(default(Either<Either<string, int>, string>)).Unwrap());
                 AssertType<int, string>(() => CreateRight(default(Either<int, Either<string, int>>)).Unwrap());
+
+                AssertType<int, string>(() => CreateRight(default(Either<Either<int, string>, Either<int, string>>)).Unwrap());
+                AssertType<int, string>(() => CreateRight(default(Either<Either<int, string>, Either<string, int>>)).Unwrap());
             });
         }
 

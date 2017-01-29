@@ -4,13 +4,6 @@ namespace ImplicitEither
 {
     public class Either<L, R>
     {
-        static Either()
-        {
-            if (typeof(L) == typeof(R))
-                throw new Exception(
-                    $"Using the type Either with equal type parameters ({typeof(L).Name}) is prohibited.");
-        }
-
         internal L Left { get; }
         internal R Right { get; }
         internal bool IsLeft { get; }
@@ -123,6 +116,8 @@ namespace ImplicitEither
         public static Either<L, R> Unwrap<L, R>(this Either<L, Either<R, L>> either) => either.IsLeft ? either.Left : either.Right;
         public static Either<L, R> Unwrap<L, R>(this Either<Either<L, R>, R> either) => either.IsLeft ? either.Left : either.Right;
         public static Either<L, R> Unwrap<L, R>(this Either<Either<R, L>, R> either) => either.IsLeft ? either.Left : either.Right;
+        public static Either<L, R> Unwrap<L, R>(this Either<Either<L, R>, Either<L, R>> either) => either.IsLeft ? either.Left : either.Right;
+        public static Either<L, R> Unwrap<L, R>(this Either<Either<L, R>, Either<R, L>> either) => either.IsLeft ? either.Left : (Either<L, R>) either.Right;
 
         #endregion
     }
