@@ -52,5 +52,21 @@ namespace ImplicitEither.Tests
                 AssertEitherIntOrString(either);
             }
         }
+
+        [Test]
+        public void TestReverseEither()
+        {
+            Either<string, int> reversedEither = IntValue;
+            AssertInt(reversedEither.Right());
+
+            reversedEither = StringValue;
+            AssertString(reversedEither.Left());
+
+            reversedEither = EitherInt;
+            AssertEitherIntOrString(reversedEither);
+
+            reversedEither = EitherString;
+            AssertEitherIntOrString(reversedEither);
+        }
     }
 }

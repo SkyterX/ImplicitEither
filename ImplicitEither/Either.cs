@@ -28,6 +28,7 @@ namespace ImplicitEither
 
         public static implicit operator Either<L, R>(L left) => Create(left);
         public static implicit operator Either<L, R>(R right) => Create(right);
+        public static implicit operator Either<L, R>(Either<R, L> either) => either.Reverse();
     }
 
     public static class EitherExtensions
@@ -65,6 +66,13 @@ namespace ImplicitEither
 
         public static void IfLeft<L, R>(this Either<L, R> either, Action<L> left) => either.Do(left: left);
         public static void IfRight<L, R>(this Either<L, R> either, Action<R> right) => either.Do(right: right);
+
+        public static Either<L, R> Reverse<L, R>(this Either<R, L> either)
+        {
+            if (either.IsLeft)
+                return either.Left;
+            return either.Right;
+        }
 
         public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, NL> left, Action<R> right = null)
         {
