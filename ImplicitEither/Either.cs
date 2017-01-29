@@ -23,15 +23,8 @@ namespace ImplicitEither
             IsLeft = isLeft;
         }
 
-        public static Either<L, R> Create(L left)
-        {
-            return new Either<L, R>(left, default(R), isLeft: true);
-        }
-
-        public static Either<L, R> Create(R right)
-        {
-            return new Either<L, R>(default(L), right, isLeft: false);
-        }
+        public static Either<L, R> Create(L left) => new Either<L, R>(left, default(R), isLeft: true);
+        public static Either<L, R> Create(R right) => new Either<L, R>(default(L), right, isLeft: false);
 
         public static implicit operator Either<L, R>(L left) => Create(left);
         public static implicit operator Either<L, R>(R right) => Create(right);
@@ -64,10 +57,33 @@ namespace ImplicitEither
 
         public static void Do<L, R>(this Either<L, R> either, Action<L> left = null, Action<R> right = null)
         {
-            if (left != null && either.IsLeft)
-                left(either.Left);
-            if (right != null && either.IsRight)
-                right(either.Right);
+            if (either.IsLeft)
+                left?.Invoke(either.Left);
+            else
+                right?.Invoke(either.Right);
+        }
+
+        public static Either<NL, R> MapLeft<L, R, NL>(this Either<L, R> either, Func<L, NL> left, Action<R> right = null)
+        {
+            if (either.IsLeft)
+                return left(either.Left);
+            right?.Invoke(either.Right);
+            return either.Right;
+        }
+
+        public static Either<L, NR> MapRight<L, R, NR>(this Either<L, R> either, Func<R, NR> right, Action<L> left = null)
+        {
+            if (either.IsRight)
+                return right(either.Right);
+            left?.Invoke(either.Left);
+            return either.Left;
+        }
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, NL> left, Func<R, NR> right)
+        {
+            if (either.IsLeft)
+                return left(either.Left);
+            return right(either.Right);
         }
     }
 }
