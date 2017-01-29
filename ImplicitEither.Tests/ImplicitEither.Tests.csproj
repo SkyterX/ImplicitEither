@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Either_Tests.cs" />
     <Compile Include="ImplicitConversion_Tests.cs" />
+    <Compile Include="MappingEither_Simplify_Tests.cs" />
     <Compile Include="MappingEither_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />

@@ -33,7 +33,7 @@ namespace ImplicitEither.Tests
         }
 
         [Test]
-        public void TestMapSimple()
+        public void TestMap()
         {
             Either<int, string> either = IntValue + 1;
             var mappedEither = either.Map(left: l => l - 1, right: r => r.Substring(0, 1));
