@@ -103,12 +103,34 @@ namespace ImplicitEither
 
         #endregion
 
+        #region Mapping either
+
         public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, NL> left, Func<R, NR> right)
+            => either.Map(l => (Either<NL, NR>) left(l), r => (Either<NL, NR>) right(r));
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, Either<NL, NR>> left, Func<R, NR> right)
+            => either.Map(left, r => (Either<NL, NR>) right(r));
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, NL> left, Func<R, Either<NR, NL>> right)
+            => either.Map(l => (Either<NL, NR>) left(l), r => (Either<NL, NR>) right(r));
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, Either<NR, NL>> left, Func<R, NR> right)
+            => either.Map(l => (Either<NL, NR>) left(l), r => (Either<NL, NR>) right(r));
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, NL> left, Func<R, Either<NL, NR>> right)
+            => either.Map(l => (Either<NL, NR>) left(l), right);
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, Either<NL, NR>> left, Func<R, Either<NR, NL>> right)
+            => either.Map(left, r => (Either<NL, NR>) right(r));
+
+        public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, Func<L, Either<NL, NR>> left, Func<R, Either<NL, NR>> right)
         {
             if (either.IsLeft)
                 return left(either.Left);
             return right(either.Right);
         }
+
+        #endregion
 
         #region Unwrapping nested either
 
