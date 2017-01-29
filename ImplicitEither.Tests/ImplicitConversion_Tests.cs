@@ -15,7 +15,9 @@ namespace ImplicitEither.Tests
             Assert.Throws<AssertionException>(() => TakeEitherArgumentType(new {}));
         }
 
-        private void TakeEitherArgumentType(object x) => Assert.Fail();
+        // ReSharper disable UnusedParameter.Local
+        private void TakeEitherArgumentType(object _) => Assert.Fail();
+        // ReSharper restore UnusedParameter.Local
         private void TakeEitherArgumentType(Either<int, string> either) => AssertEitherIntOrString(either);
 
         [Test]

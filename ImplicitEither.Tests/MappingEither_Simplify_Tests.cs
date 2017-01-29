@@ -48,9 +48,13 @@ namespace ImplicitEither.Tests
             });
         }
 
+        // ReSharper disable InconsistentNaming
         private void AssertSimplified<L, R>(Either<L, R> either, Func<Either<L, R>, object> getEither)
+
         {
             AssertType<L, R>(() => getEither(either));
         }
+
+        // ReSharper restore InconsistentNaming
     }
 }

@@ -16,12 +16,16 @@ namespace ImplicitEither.Tests
         protected void AssertString(Either<int, string> either) => either.Do(l => Assert.Fail(), AssertString);
         protected void AssertEitherIntOrString(Either<int, string> either) => either.Do(AssertInt, AssertString);
 
+        // ReSharper disable InconsistentNaming
         protected static void AssertType<L, R>(Func<object> getEither)
+
         {
             object either = null;
             Assert.DoesNotThrow(() => either = getEither());
             Assert.That(either, Is.TypeOf<Either<L, R>>());
         }
+
+        // ReSharper restore InconsistentNaming
 
         protected Either<int, string> Return_Either(Either<int, string> either) => either;
         protected Either<string, int> ReverseEither(Either<int, string> either) => either;

@@ -30,6 +30,8 @@ namespace ImplicitEither.Tests
             });
         }
 
+        // ReSharper disable InconsistentNaming
+        // ReSharper disable UnusedParameter.Local
         private static Either<L, R> CreateLeft<L, R>(Either<L, R> _)
             => Either<L, R>.Create(default(L));
 
@@ -41,5 +43,8 @@ namespace ImplicitEither.Tests
 
         private static Either<L2, Either<L, R>> CreateRight<L, R, L2>(Either<L2, Either<L, R>> _)
             => Either<L2, Either<L, R>>.Create(Either<L, R>.Create(default(R)));
+
+        // ReSharper restore UnusedParameter.Local
+        // ReSharper restore InconsistentNaming
     }
 }
