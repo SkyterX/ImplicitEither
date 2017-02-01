@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
 
 namespace ImplicitEither
 {
-    public struct Either<L, R>
+    public struct Either<L, R> : IEquatable<Either<L, R>>
     {
         internal L Left { get; }
         internal R Right { get; }
@@ -26,7 +27,34 @@ namespace ImplicitEither
         public static implicit operator Either<L, R>([CanBeNull] R right) => Create(right);
         public static implicit operator Either<L, R>(Either<R, L> either) => either.Reverse();
 
-        public override string ToString() => IsLeft ? $"{typeof (L).Name}: {Left}" : $"{typeof (R).Name}: {Right}";
+        public override string ToString() => IsLeft ? $"{typeof(L).Name}: {Left}" : $"{typeof(R).Name}: {Right}";
+
+        #region Equality members
+
+        public bool Equals(Either<L, R> other)
+        {
+            return IsLeft
+                ? other.IsLeft && EqualityComparer<L>.Default.Equals(Left, other.Left)
+                : !other.IsLeft && EqualityComparer<R>.Default.Equals(Right, other.Right);
+        }
+
+        public override bool Equals(object obj) => obj is Either<L, R> && Equals((Either<L, R>) obj);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = IsLeft
+                    ? EqualityComparer<L>.Default.GetHashCode(Left)
+                    : EqualityComparer<R>.Default.GetHashCode(Right);
+                return (hashCode * 397) ^ IsLeft.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(Either<L, R> left, Either<L, R> right) => left.Equals(right);
+        public static bool operator !=(Either<L, R> left, Either<L, R> right) => !left.Equals(right);
+
+        #endregion
     }
 
     public static class EitherExtensions

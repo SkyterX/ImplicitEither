@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Either_Tests.cs" />
+    <Compile Include="Equality_Tests.cs" />
     <Compile Include="Formatting_Tests.cs" />
     <Compile Include="ImplicitConversion_Tests.cs" />
     <Compile Include="MappingEither_Simplify_Tests.cs" />
