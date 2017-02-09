@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
 
 namespace ImplicitEither
 {
+    [DataContract]
     public struct Either<L, R> : IEquatable<Either<L, R>>
     {
-        internal L Left { get; }
-        internal R Right { get; }
-        internal bool IsLeft { get; }
+        [DataMember]
+        internal L Left { get; private set; }
+
+        [DataMember]
+        internal R Right { get; private set; }
+
+        [DataMember]
+        internal bool IsLeft { get; private set; }
+
         internal bool IsRight => !IsLeft;
 
         private Either([CanBeNull] L left, [CanBeNull] R right, bool isLeft)
@@ -160,7 +168,7 @@ namespace ImplicitEither
             => either.Map(l => (Either<NL, NR>) left(l), right);
 
         public static Either<NL, NR> Map<L, R, NL, NR>(this Either<L, R> either, [NotNull] Func<L, Either<NL, NR>> left,
-                                                       [NotNull] Func<R, Either<NR, NL>> right)
+            [NotNull] Func<R, Either<NR, NL>> right)
             => either.Map(left, r => (Either<NL, NR>) right(r));
 
         public static Either<NL, NR> Map<L, R, NL, NR>(
