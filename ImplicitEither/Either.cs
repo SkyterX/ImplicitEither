@@ -21,18 +21,8 @@ namespace ImplicitEither
 
         internal bool IsRight => !IsLeft;
 
-        private Either([CanBeNull] L left, [CanBeNull] R right, bool isLeft)
-        {
-            Left = left;
-            Right = right;
-            IsLeft = isLeft;
-        }
-
-        public static Either<L, R> Create([CanBeNull] L left) => new Either<L, R>(left, default(R), isLeft: true);
-        public static Either<L, R> Create([CanBeNull] R right) => new Either<L, R>(default(L), right, isLeft: false);
-
-        public static implicit operator Either<L, R>([CanBeNull] L left) => Create(left);
-        public static implicit operator Either<L, R>([CanBeNull] R right) => Create(right);
+        public static implicit operator Either<L, R>([CanBeNull] L left) => new Either<L, R> {Left = left, IsLeft = true};
+        public static implicit operator Either<L, R>([CanBeNull] R right) => new Either<L, R> {Right = right, IsLeft = false};
         public static implicit operator Either<L, R>(Either<R, L> either) => either.Reverse();
 
         public override string ToString() => IsLeft ? $"{typeof(L).Name}: {Left}" : $"{typeof(R).Name}: {Right}";

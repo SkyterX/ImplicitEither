@@ -7,8 +7,8 @@ namespace ImplicitEither.Tests
     {
         protected const string StringValue = "0";
         protected const int IntValue = 0;
-        protected Either<int, string> EitherInt { get; } = Either<int, string>.Create(IntValue);
-        protected Either<int, string> EitherString { get; } = Either<int, string>.Create(StringValue);
+        protected Either<int, string> EitherInt { get; } = IntValue;
+        protected Either<int, string> EitherString { get; } = StringValue;
         protected void AssertInt(int x) => Assert.That(x, Is.EqualTo(IntValue));
         protected void AssertString(string x) => Assert.That(x, Is.EqualTo(StringValue));
 
