@@ -25,6 +25,9 @@ namespace ImplicitEither.Tests
             Assert.That(either, Is.TypeOf<Either<L, R>>());
         }
 
+        protected static Either<L, R> CreateLeft<L, R>() => default(L);
+        protected static Either<L, R> CreateRight<L, R>() => default(R);
+
         // ReSharper restore InconsistentNaming
 
         protected Either<int, string> Return_Either(Either<int, string> either) => either;
